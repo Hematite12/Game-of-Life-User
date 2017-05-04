@@ -1,7 +1,7 @@
 import random
 
-DIM = 60
-CELLDIM = 15
+DIM = 110
+CELLDIM = 9
 NUMSEEDS = 50
 BOXDIM = 10
 MARGIN = (DIM - BOXDIM) / 2
@@ -9,8 +9,7 @@ MARGIN = (DIM - BOXDIM) / 2
 def makeNineActive(board, x, y):
     for i in range(x-1, x+2):
         for j in range(y-1, y+2):
-            if not i==0 or i==DIM-1 or j==0 or j==DIM-1:
-                board[i][j] = True
+            board[i][j] = True
 
 def makeNineInactive(board, x, y):
     for i in range(x-1, x+2):
@@ -83,29 +82,29 @@ def sumNeighbors(board, x, y):
                     sum += 1
     return sum
 
-def updateBoard(board, boardTwo, boardInerts, boardChanged):
+def updateInerts(boardInerts):
+    for i in range(1, DIM-1):
+        for j in range(1, DIM-1):
+            boardInerts[i][j] = False
+
+def updateBoard(board, boardTwo, boardInerts):
     changes = []
     for i in range(1, DIM-1):
         for j in range(1, DIM-1):
-            if not boardInerts[i][j]:
+            if boardInerts[i][j]:
                 num = sumNine(board, i, j)
-                change = False
                 if board[i][j]:
                     if num<3 or num>4:
-                        change = True
                         boardTwo[i][j] = False
                         changes.append([False, i, j])
-                        makeNeighborsActive(boardChanged, i, j)
                 else:
                     if num==3:
-                        change = True
                         boardTwo[i][j] = True
                         changes.append([True, i, j])
-                        makeNeighborsActive(boardChanged, i, j)
-                if not change or boardChanged[i][j]:
-                    boardInerts[i][j] = True
+    updateInerts(boardInerts)
     for change in changes:
         board[change[1]][change[2]] = change[0]
+        makeNineActive(boardInerts, change[1], change[2])
 
 def getCopies(boardCopy):
     board = [row[:] for row in boardCopy]

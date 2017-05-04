@@ -1,14 +1,14 @@
 import random
 from Functions import *
 
-MODE = "USER" # RANDOM or USER or GENETIC
+MODE = "RANDOM" # RANDOM or USER or GENETIC
 THREAD = "OFF" # ON or OFF
 PEN = "DRAW" # DRAW or ERASER
 FRAMERATE = 200
 
 def setup():
-    global b, b2, bCopy, bInert, bChanged
-    bInert, bChanged = makeBoards()
+    global b, b2, bCopy, bInert
+    bInert = makeEmptyBoard()
     if MODE == "RANDOM":
         b, b2 = makeRandomBoards(bInert)
         bCopy = [row[:] for row in b]
@@ -41,7 +41,6 @@ def mouseDragged():
 def keyPressed():
     global THREAD, PEN, b, b2, bCopy
     if key == " ":
-        print(bInert)
         if THREAD == "OFF":
             THREAD = "ON"
         else:
@@ -60,9 +59,9 @@ def keyPressed():
         THREAD = "OFF"
 
 def reset():
-    global THREAD, b, b2, bInert, bChanged
+    global THREAD, b, b2, bInert
     THREAD = "OFF"
-    bInert, bChanged = makeBoards()
+    bInert = makeEmptyBoard()
     if MODE == "RANDOM":
         b, b2 = makeRandomBoards(bInert)
     elif MODE == "USER":
@@ -71,4 +70,4 @@ def reset():
 def draw():
     showBoard(b)
     if THREAD == "ON":
-        updateBoard(b, b2, bInert, bChanged)
+        updateBoard(b, b2, bInert)
