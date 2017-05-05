@@ -1,7 +1,7 @@
 import random
 from Functions import *
 
-MODE = "RANDOM" # RANDOM or USER or GENETIC
+MODE = "RANDOM" # RANDOM or USER
 THREAD = "OFF" # ON or OFF
 PEN = "DRAW" # DRAW or ERASER
 FRAMERATE = 200
