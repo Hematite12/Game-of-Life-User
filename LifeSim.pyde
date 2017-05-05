@@ -7,14 +7,15 @@ PEN = "DRAW" # DRAW or ERASER
 FRAMERATE = 200
 
 def setup():
-    global b, b2, bCopy, bInert
+    global b, b2, bCopy, bInert, bInertCopy
     bInert = makeEmptyBoard()
     if MODE == "RANDOM":
         b, b2 = makeRandomBoards(bInert)
         bCopy = [row[:] for row in b]
+        bInertCopy = [row[:] for row in bInert]
     else:
         b, b2 = makeBoards()
-        bCopy = makeEmptyBoard()
+        bCopy, bInertCopy = makeBoards()
     size(DIM*CELLDIM+10, DIM*CELLDIM+10)
     background(0)
     frameRate(FRAMERATE)
@@ -39,7 +40,7 @@ def mouseDragged():
                     flipDeath(b, b2, bInert, xPos, yPos)
 
 def keyPressed():
-    global THREAD, PEN, b, b2, bCopy
+    global THREAD, PEN, b, b2, bCopy, bInertCopy, bInert
     if key == " ":
         if THREAD == "OFF":
             THREAD = "ON"
@@ -54,8 +55,10 @@ def keyPressed():
         reset()
     elif key == "c":
         bCopy = [row[:] for row in b]
+        bInertCopy = [row[:] for row in bInert]
     elif key == "v":
         b, b2 = getCopies(bCopy)
+        bInert = [row[:] for row in bInertCopy]
         THREAD = "OFF"
 
 def reset():

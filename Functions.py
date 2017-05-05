@@ -1,7 +1,7 @@
 import random
 
-DIM = 110
-CELLDIM = 9
+DIM = 120
+CELLDIM = 5
 NUMSEEDS = 50
 BOXDIM = 10
 MARGIN = (DIM - BOXDIM) / 2
